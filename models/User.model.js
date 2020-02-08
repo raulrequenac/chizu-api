@@ -5,6 +5,13 @@ const bcrypt = require('bcrypt');
 const EMAIL_PATTERN = /^(([^<>()\[\]\.,;:\s@\"]+(\.[^<>()\[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i;
 const SALT_WORK_FACTOR = 10;
 
+const generateRandomToken = () => {
+  return Math.random().toString(36).substring(2, 15) + 
+    Math.random().toString(36).substring(2, 15) + 
+    Math.random().toString(36).substring(2, 15) + 
+    Math.random().toString(36).substring(2, 15);
+}
+
 const userSchema = new Schema({
   name: {
     type: String,
@@ -25,7 +32,18 @@ const userSchema = new Schema({
     required: [true, 'Password is required'],
     minlength: [8, 'Password needs at last 8 chars']
   },
-  image: String
+  social: {
+    google: String
+  }, 
+  image: String,
+  validateToken: {
+    type: String,
+    default: generateRandomToken
+  },
+  validated: {
+    type: Boolean,
+    default: true
+  }
 }, {
   timestamps:true,
   toJSON: {
@@ -59,6 +77,20 @@ userSchema.pre('save', function (next) {
 userSchema.methods.checkPassword = function (password) {
   return bcrypt.compare(password, this.password);
 }
+
+userSchema.virtual('locations', {
+  ref: 'Location',
+  localField: 'id',
+  foreignField: 'user',
+  justOne: false,
+});
+
+userSchema.virtual('routes', {
+  ref: 'Route',
+  localField: 'id',
+  foreignField: 'user',
+  justOne: false,
+});
 
 const user = new mongoose.model('User', userSchema)
 
