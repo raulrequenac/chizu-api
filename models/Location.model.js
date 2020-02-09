@@ -4,7 +4,6 @@ const Schema = mongoose.Schema
 const locationSchema = new Schema({
   name: {
     type: String,
-    required: [true, 'Name is required'],
     unique: [true, 'This name is already in use']
   },
   type: {
