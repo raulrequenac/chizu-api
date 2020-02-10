@@ -6,6 +6,8 @@ const logger = require('morgan');
 const cookieParser = require('cookie-parser');
 const mongoose = require('mongoose');
 const cors = require('./config/cors.config');
+const passportConfig = require('./config/passport.config');
+const session = require('./config/session.config');
 
 /**
  * DB config
@@ -21,6 +23,14 @@ app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
+app.use(session);
+app.use(passportConfig);
+
+
+app.use((req, _, next) => {
+    req.currentUser = req.session.user
+    next()
+})
 
 /**
  * Configure routes

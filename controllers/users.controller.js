@@ -31,6 +31,7 @@ module.exports.delete = (req, res, next) => {
   User.findByIdAndRemove(req.currentUser.id)
     .then(() => {
       req.session.destroy()
+      res.clearCookie("connect.sid")
       res.status(200).json()
     })
     .catch(next);
@@ -53,10 +54,12 @@ module.exports.login = (req, res, next) => {
           .then(match => {
             if (!match) {
               throw createError(400, 'invalid password');
-            } else {
+            } else if (user.validated){
               req.session.user = user;
-              //res.cookie('foo', 'bar')
+              res.cookie('foo', 'bar')
               res.json(user)
+            } else {
+              throw createError(403, 'user is not validated')
             }
           })
       }
@@ -77,5 +80,6 @@ module.exports.socialLogin = (req, res, next) => {
 
 module.exports.logout = (req, res) => {
   req.session.destroy()
+  res.clearCookie("connect.sid")
   res.status(204).json();
 }

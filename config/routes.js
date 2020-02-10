@@ -3,24 +3,25 @@ const router = express.Router();
 const controller = require('../controllers/base.controller');
 const usersController = require('../controllers/users.controller')
 const locationsController = require('../controllers/locations.controller')
-const routesController= require('../controllers/routes.controller')
+const routesController = require('../controllers/routes.controller')
+const businessController = require('../controllers/business.controller')
 
 router.get('/', controller.base);
 
-router.post('/users/register', usersController.register)
-router.get('/users/:validateToken/validate', usersController.validate)
-router.patch('/users/edit', usersController.edit)
-router.post('/users/delete', usersController.delete)
-router.post('/users/login', usersController.login)
-router.post('/users/socialLogin', usersController.socialLogin)
-router.post('/users/logout', usersController.logout)
+router.post('/register', usersController.register)
+router.get('/validate/:validateToken', usersController.validate)
+router.patch('/edit', usersController.edit)
+router.post('/delete', usersController.delete)
+router.post('/login', usersController.login)
+router.post('/socialLogin', usersController.socialLogin)
+router.post('/logout', usersController.logout)
 
-router.post('/users/addLocation', locationsController.addLocation)
-router.patch('/users/editLocation/:locationId', locationsController.editLocation)
-router.post('/users/deleteLocation/:locationId', locationsController.deleteLocation)
+router.post('/addLocation', locationsController.addLocation)
+router.patch('/editLocation/:locationId', locationsController.editLocation)
+router.post('/deleteLocation/:locationId', locationsController.deleteLocation)
 
-router.post('/users/addRoute', routesController.addRoute)
-router.patch('/users/editRoute/:routeId', routesController.editRoute)
-router.post('/users/deleteRoute/:routeId', routesController.deleteRoute)
+router.post('/addRoute', routesController.addRoute)
+router.patch('/editRoute/:routeId', routesController.editRoute)
+router.post('/deleteRoute/:routeId', routesController.deleteRoute)
 
 module.exports = router;

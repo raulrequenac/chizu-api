@@ -21,7 +21,7 @@ module.exports.sendValidateEmail = (targetUser) => {
       subject: 'Welcome to Chizu!',
       html: `
       <h1>Welcome</h1>
-      <a href='${APP_HOST}/users/${targetUser.validateToken}/validate'>Confirm account</a>
+      <a href='${APP_HOST}/validate/${targetUser.validateToken}'>Confirm account</a>
     `
     })
     .then(info => console.log(info))
