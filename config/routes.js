@@ -1,6 +1,8 @@
 const express = require('express');
 const router = express.Router();
-const controller = require('../controllers/base.controller');
+const passport = require('passport')
+//const uploadCloud = require('../config/cloudinary.config.js')
+const controller = require('../controllers/base.controller')
 const usersController = require('../controllers/users.controller')
 const locationsController = require('../controllers/locations.controller')
 const routesController = require('../controllers/routes.controller')
@@ -13,7 +15,8 @@ router.get('/validate/:validateToken', usersController.validate)
 router.patch('/edit', usersController.edit)
 router.post('/delete', usersController.delete)
 router.post('/login', usersController.login)
-router.post('/socialLogin', usersController.socialLogin)
+router.post('/login/google/users', passport.authenticate('google-users', { scope: ['openid', 'profile', 'email'] }))
+router.get('/login/google/users/callback', usersController.socialLogin)
 router.post('/logout', usersController.logout)
 
 router.post('/addLocation', locationsController.addLocation)
