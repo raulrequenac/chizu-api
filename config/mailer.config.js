@@ -18,10 +18,10 @@ module.exports.sendValidateEmail = (targetUser) => {
   transporter.sendMail({
       from: `"Chizu" <${user}>`,
       to: targetUser.email,
-      subject: 'Welcome to Chizu!',
+      subject: 'Bienvenido a Chizu!',
       html: `
-      <h1>Welcome</h1>
-      <a href='${APP_HOST}/validate/${targetUser.validateToken}'>Confirm account</a>
+      <h1>Bienvenido</h1>
+      <a href='${APP_HOST}/users/validate/${targetUser.validateToken}'>Confirm account</a>
     `
     })
     .then(info => console.log(info))

@@ -42,7 +42,7 @@ const userSchema = new Schema({
   },
   validated: {
     type: Boolean,
-    default: true
+    default: false
   }
 }, {
   timestamps:true,
@@ -51,12 +51,14 @@ const userSchema = new Schema({
       ret.id = res._id
       delete ret._id
       delete ret.__v
+      //delete ret.password
+      delete ret.validateToken
       return ret
     }
   }
 })
 
-userSchema.pre('save', function (next) {
+const hashPassword = (next) => {
   const user = this;
 
   if (user.isModified('password')) {
@@ -72,7 +74,15 @@ userSchema.pre('save', function (next) {
   } else {
     next();
   }
+}
+
+userSchema.pre('save', function (next) {
+  hashPassword(next)
 });
+
+userSchema.pre('findByIdAndUpdate', function(next) {
+  hashPassword(next)
+})
 
 userSchema.methods.checkPassword = function (password) {
   return bcrypt.compare(password, this.password);

@@ -3,6 +3,14 @@ const mailer = require('../config/mailer.config');
 const passport = require('passport');
 const createError = require('http-errors');
 
+module.exports.getUsers = (req, res, next) => {
+  User.find()
+    .then(users => {
+      res.status(200).json(users)
+    })
+    .catch()
+}
+
 module.exports.register = (req, res, next) => {
   const user = new User(req.body)
 
@@ -15,7 +23,7 @@ module.exports.register = (req, res, next) => {
 }
 
 module.exports.validate = (req, res, next) => {
-  User.findOneAndUpdate({validateToken: req.params.validateToken}, {validate: true}, {new: true})
+  User.findOneAndUpdate({validateToken: req.params.validateToken}, {validated: true}, {new: true})
     .then(user => res.status(200).json(user))
     .catch(next)
 }
@@ -28,6 +36,9 @@ module.exports.edit = (req, res, next) => {
 }
 
 module.exports.delete = (req, res, next) => {
+  User.findOneAndRemove()
+    .then(res.status(200).json())
+    .catch()
   User.findByIdAndRemove(req.currentUser.id)
     .then(() => {
       req.session.destroy()
