@@ -29,9 +29,23 @@ module.exports.validate = (req, res, next) => {
 }
 
 module.exports.edit = (req, res, next) => {
-  User.findByIdAndUpdate(req.currentUser.id, req.body, {new: true})
+  const {
+    name,
+    email,
+    password,
+    image
+  } = req.body
+  
+  User.findById(req.currentUser.id)
     .populate('routes')
-    .then(user => res.status(200).json(user))
+    .then(user => {
+      if (name) user.name = name
+      if (email) user.email = email
+      if (password) user.password = password
+      if (image) user.image = image
+      user.save()
+      res.status(200).json(user)
+    })
     .catch(next)
 }
 
