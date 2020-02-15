@@ -2,6 +2,10 @@ const mongoose = require('mongoose')
 const Schema = mongoose.Schema
 
 const locationSchema = new Schema({
+  id: {
+    type: String,
+    unique: true
+  },
   name: {
     type: String,
     unique: [true, 'This name is already in use']
