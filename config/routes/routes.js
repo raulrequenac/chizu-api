@@ -5,7 +5,6 @@ const controller = require('../../controllers/base.controller')
 const usersController = require('../../controllers/users.controller')
 const locationsController = require('../../controllers/locations.controller')
 const routesController = require('../../controllers/routes.controller')
-const businessController = require('../../controllers/business.controller')
 
 router.get('/', controller.base);
 
