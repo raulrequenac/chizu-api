@@ -15,6 +15,8 @@ module.exports.register = (req, res, next) => {
   const user = new User(req.body)
 
   user.save()
+    .populate('locations')
+    .populate('routes')
     .then(user => {
       mailer.sendValidateEmail(user)
       res.status(201).json(user)
@@ -37,6 +39,7 @@ module.exports.edit = (req, res, next) => {
   } = req.body
   
   User.findById(req.currentUser.id)
+    .populate('locations')
     .populate('routes')
     .then(user => {
       if (name) user.name = name
@@ -70,6 +73,7 @@ module.exports.login = (req, res, next) => {
   }
 
   User.findOne({ email: email })
+    .populate('locations')
     .populate('routes')
     .then(user => {
       if (!user) {
