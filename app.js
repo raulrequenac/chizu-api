@@ -35,10 +35,8 @@ app.use((req, _, next) => {
 /**
  * Configure routes
  */
-const router = require('./config/routes/routes.js');
+const router = require('./config/routes.js');
 app.use('/', router);
-const fileUploadRouter = require('./config/routes/file-upload.routes.js')
-app.use('/api', fileUploadRouter);
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
