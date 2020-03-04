@@ -14,9 +14,10 @@ module.exports.getUsers = (req, res, next) => {
 module.exports.register = (req, res, next) => {
   const user = new User(req.body)
 
-  user.save()
+  user
     .populate('locations')
     .populate('routes')
+    .save()
     .then(user => {
       mailer.sendValidateEmail(user)
       res.status(201).json(user)
